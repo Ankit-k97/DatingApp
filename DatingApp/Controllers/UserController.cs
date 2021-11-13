@@ -97,5 +97,14 @@ namespace DatingApp.Controllers
         {
             return await context.Users.AnyAsync(x=>x.UserName==username.ToLower());
         }
+
+        [HttpGet("GetError")]
+        [AllowAnonymous]
+        public string GetError()
+        {
+            var user = context.Users.Find(-1) ;
+
+            return user.Id.ToString();
+        }
     }
 }
