@@ -1,4 +1,5 @@
 ﻿using DatingApp.Data;
+using DatingApp.Helpers;
 using DatingApp.Interface;
 using DatingApp.Services;
 using Microsoft.EntityFrameworkCore;
@@ -11,13 +12,16 @@ using System.Threading.Tasks;
 
 namespace DatingApp.Extensions
 {
-    public static class ApplicationSerivceExtensions
+    public static class ApplicationServiceExtensions
     {
-        public static IServiceCollection AddApplicationServices(this IServiceCollection services,IConfiguration configration)
+        public static IServiceCollection AddApplicationServices(this IServiceCollection services, IConfiguration configration)
         {
 
             services.AddScoped<ITokenService, TokenService>();
-            services.AddDbContext<DataContext>(options => {
+            services.AddScoped<IUserRepository, UserRepository>();
+            services.AddAutoMapper(typeof(AutoMapperProfiles).Assembly);
+            services.AddDbContext<DataContext>(options =>
+            {
                 options.UseSqlite(configration.GetConnectionString("DefaultConnection"));
             });
 
