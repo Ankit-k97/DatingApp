@@ -9,6 +9,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -106,13 +107,19 @@ namespace DatingApp.Controllers
             return await context.Users.AnyAsync(x => x.UserName == username.ToLower());
         }
 
-        [HttpGet("GetError")]
-        [AllowAnonymous]
-        public string GetError()
+        [HttpPut]
+        public async Task<ActionResult> UpdateUser(MemberUpdateDto memberUpdateDto)
         {
-            var user = context.Users.Find(-1);
+            var username = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var user = await userRepository.GetUserByUsernameAsync(username);
+            mapper.Map(memberUpdateDto, user);
 
-            return user.Id.ToString();
+            userRepository.Update(user);
+
+            if (await userRepository.SaveAllAsync()) return NoContent();
+
+            return BadRequest("Fail to Update User");
+
         }
     }
 }
