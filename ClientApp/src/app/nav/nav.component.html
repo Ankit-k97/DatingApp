@@ -21,10 +21,11 @@
 
         </div>
         <div class="btn-group" dropdown *ngIf="(service.currentUser$ | async) as user">
+            <img src="{{user.photoUrl}}" alt="{{user.userName}}">
             <button id="button-basic" dropdownToggle type="button" class="btn btn-primary dropdown-toggle" aria-controls="dropdown-basic">
-        Welcome {{user.userName | titlecase}} <span class="caret"></span>
-      </button>
-            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu" role="menu" aria-labelledby="button-basic">
+            Welcome {{user.userName | titlecase}} <span class="caret"></span>
+            </button>
+            <ul id="dropdown-basic" *dropdownMenu class="dropdown-menu ml-2" role="menu" aria-labelledby="button-basic">
                 <li role="menuitem"><a class="dropdown-item" routerLink="/member/edit">Edit Profile</a></li>
                 <li role="menuitem"><a class="dropdown-item" href="#" (click)='logout()'>LogOut</a></li>
             </ul>
